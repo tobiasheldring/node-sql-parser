@@ -396,4 +396,15 @@ describe('transactsql', () => {
       expect(getParsedSql(sql[0], tsqlOpt)).to.equal(sql[1])
     })
   })
+
+  describe('quotations', () => {
+    it('should support double quoted table mentions in selects', () => {
+      const sql = `SELECT
+      "my_table"."my_column"
+    FROM
+      "my_table"`
+      expect(getParsedSql(sql)).to.be.equal('SELECT [my_table].[my_column] FROM [my_table]')
+    })
+  })
+
 })
