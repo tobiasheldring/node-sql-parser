@@ -483,4 +483,16 @@ describe('snowflake', () => {
       expect(() => parser.whiteListCheck(sql, ['select::foo:baz'], opt)).to.throw("authority = 'select::foo.bar::baz' is required in table whiteList to execute SQL = 'SELECT * from foo.bar.baz'")
     })
   })
+
+  describe('data types', () => {
+    it('should support the float data types', () => {
+      const sql = `SELECT
+      my_column::float AS "my_number",
+      my_column::float4 AS "my_number2",
+      my_column::float8 AS "my_number3"
+    FROM
+      "my_table"`
+      expect(getParsedSql(sql)).to.be.equal('SELECT `my_column::float` AS `my_number`, `my_column::float4` AS `my_number2`, `my_column::float8` AS `my_number3` FROM `my_table`')
+    })
+  })
 })
